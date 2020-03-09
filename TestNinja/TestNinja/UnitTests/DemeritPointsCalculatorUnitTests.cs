@@ -5,23 +5,6 @@ using TestNinja.Fundamentals;
 
 namespace TestNinja.UnitTests
 {
-
-    [TestFixture]
-    public class VideoServiceUnitTests
-    {
-        [SetUp]
-        public void SetUp()
-        {
-            var fileReader = new Mock<IFileReader>());
-        }
-        [Test]
-        public void ReadVideoTitle_EmptyFile_ReturnError()
-        {
-            
-        }
-    }
-    
-    
     [TestFixture]
     public class DemeritPointsCalculatorUnitTests
     {

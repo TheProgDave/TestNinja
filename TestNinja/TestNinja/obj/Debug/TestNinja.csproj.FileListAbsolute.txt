@@ -26,3 +26,7 @@ C:\Users\dgray2\source\repos\source-code-starter\TestNinja\TestNinja\obj\Debug\T
 C:\Users\dgray2\source\repos\source-code-starter\TestNinja\TestNinja\obj\Debug\TestNinja.csproj.CopyComplete
 C:\Users\dgray2\source\repos\source-code-starter\TestNinja\TestNinja\obj\Debug\TestNinja.dll
 C:\Users\dgray2\source\repos\source-code-starter\TestNinja\TestNinja\obj\Debug\TestNinja.pdb
+C:\Users\dgray2\source\repos\source-code-starter\TestNinja\TestNinja\bin\Debug\Castle.Core.dll
+C:\Users\dgray2\source\repos\source-code-starter\TestNinja\TestNinja\bin\Debug\Moq.dll
+C:\Users\dgray2\source\repos\source-code-starter\TestNinja\TestNinja\bin\Debug\Castle.Core.xml
+C:\Users\dgray2\source\repos\source-code-starter\TestNinja\TestNinja\bin\Debug\Moq.xml

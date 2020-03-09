@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -23,10 +21,12 @@ namespace TestNinja.Mocking
     public class VideoService
     {
         private IFileReader _fileReader;
+        private IVideoRepository _videoService;
 
-        public VideoService(IFileReader reader = null)
+        public VideoService(IFileReader reader = null, IVideoRepository service = null)
         {
             _fileReader = reader ?? new FileReader();
+            _videoService = service ?? new VideoRepository();
         }
         
         public string ReadVideoTitle()
@@ -40,20 +40,8 @@ namespace TestNinja.Mocking
 
         public string GetUnprocessedVideosAsCsv()
         {
-            var videoIds = new List<int>();
-            
-            using (var context = new VideoContext())
-            {
-                var videos = 
-                    (from video in context.Videos
-                    where !video.IsProcessed
-                    select video).ToList();
-                
-                foreach (var v in videos)
-                    videoIds.Add(v.Id);
-
-                return String.Join(",", videoIds);
-            }
+            var videoIds = _videoService.GetUnprocessedVideos().Select(v => v.Id).ToList();
+            return String.Join(",", videoIds);
         }
     }
 
@@ -62,10 +50,5 @@ namespace TestNinja.Mocking
         public int Id { get; set; }
         public string Title { get; set; }
         public bool IsProcessed { get; set; }
-    }
-
-    public class VideoContext : DbContext
-    {
-        public DbSet<Video> Videos { get; set; }
     }
 }
