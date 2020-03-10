@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using TestNinja.Mocking;
 
@@ -9,14 +10,14 @@ namespace TestNinja.UnitTests
     {
         private Mock<IFileReader> _fileReader;
         private VideoService _service;
-        private Mock<VideoService> _videoContext;
+        private Mock<IVideoRepository> _videoRepository;
 
         [SetUp]
         public void SetUp()
         { 
             _fileReader = new Mock<IFileReader>();
-            _service = new VideoService(_fileReader.Object);
-            _videoContext = new Mock<VideoService>();
+            _videoRepository = new Mock<IVideoRepository>();
+            _service = new VideoService(_fileReader.Object, _videoRepository.Object);
         }
         [Test]
         public void ReadVideoTitle_EmptyFile_ReturnError()
@@ -26,15 +27,24 @@ namespace TestNinja.UnitTests
         }
 
         [Test]
-        public void GetUnprocessedVideosAsCsv_HasUnprocessedVideos_ReturnsCommaDelimitedVideoTitles()
+        public void GetUnprocessedVideosAsCsv_UnprocessedVideos_ReturnsCommaDelimitedVideoTitles()
         {
-            
+            _videoRepository.Setup(r => r.GetUnprocessedVideos()).Returns(new List<Video>
+            {
+                new Video {Id = 1},
+                new Video {Id = 2},
+                new Video {Id = 3}
+            });
+
+            Assert.That(_service.GetUnprocessedVideosAsCsv(), Is.EqualTo("1,2,3"));
         }
 
         [Test]
-        public void GetUnprocessedVideosAsCsv_NoUnprocessedVideos_ReturnsCommaDelimitedVideoTitles()
+        public void GetUnprocessedVideosAsCsv_AllVideosProcessed_ReturnsCommaDelimitedVideoTitles()
         {
+            _videoRepository.Setup(r => r.GetUnprocessedVideos()).Returns(new List<Video>());
 
+            Assert.That(_service.GetUnprocessedVideosAsCsv(), Is.EqualTo(""));
         }
     }
 }

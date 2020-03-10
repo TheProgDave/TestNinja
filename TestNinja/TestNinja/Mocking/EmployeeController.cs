@@ -2,20 +2,38 @@
 
 namespace TestNinja.Mocking
 {
+    public class EmployeeStorage : IEmployeeStorage
+    {
+        private EmployeeContext _employeeContext;
+
+        public EmployeeStorage(EmployeeContext context = null)
+        {
+            _employeeContext = context ?? new EmployeeContext();
+        }
+        
+        public void DeleteEmployee(int id)
+        {
+            var employee = _employeeContext.Employees.Find(id);
+            if (employee == null) return;
+            _employeeContext.Employees.Remove(employee);
+            _employeeContext.SaveChanges();
+        }
+    }
+    
+    
     public class EmployeeController
     {
-        private EmployeeContext _db;
+        private readonly IEmployeeStorage _employeeStorage;
 
-        public EmployeeController()
+        public EmployeeController(IEmployeeStorage storage = null)
         {
-            _db = new EmployeeContext();
+            
+            _employeeStorage = storage ?? new EmployeeStorage();
         }
 
         public ActionResult DeleteEmployee(int id)
         {
-            var employee = _db.Employees.Find(id);
-            _db.Employees.Remove(employee);
-            _db.SaveChanges();
+            _employeeStorage.DeleteEmployee(id);
             return RedirectToAction("Employees");
         }
 

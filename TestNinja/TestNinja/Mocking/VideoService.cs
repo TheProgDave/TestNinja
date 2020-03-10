@@ -41,7 +41,7 @@ namespace TestNinja.Mocking
         public string GetUnprocessedVideosAsCsv()
         {
             var videoIds = _videoService.GetUnprocessedVideos().Select(v => v.Id).ToList();
-            return String.Join(",", videoIds);
+            return string.Join(",", videoIds);
         }
     }
 

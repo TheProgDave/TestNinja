@@ -69,6 +69,7 @@
     <Compile Include="Fundamentals\Stack.cs" />
     <Compile Include="Mocking\BookingHelper.cs" />
     <Compile Include="Mocking\EmployeeController.cs" />
+    <Compile Include="Mocking\IEmployeeStorage.cs" />
     <Compile Include="Mocking\InstallerHelper.cs" />
     <Compile Include="Mocking\OrderService.cs" />
     <Compile Include="Mocking\Product.cs" />
@@ -78,9 +79,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\CustomerControllerUnitTests.cs" />
     <Compile Include="UnitTests\DemeritPointsCalculatorUnitTests.cs" />
+    <Compile Include="UnitTests\EmployeeControllerUnitTests.cs" />
     <Compile Include="UnitTests\ErrorLoggerUnitTests.cs" />
     <Compile Include="UnitTests\FizzBuzzUnitTests.cs" />
     <Compile Include="UnitTests\HtmlFormatterUnitTests.cs" />
+    <Compile Include="UnitTests\InstallerHelperUnitTests.cs" />
     <Compile Include="UnitTests\MathUnitTests.cs" />
     <Compile Include="UnitTests\StackUnitTests.cs" />
     <Compile Include="UnitTests\VideoServiceUnitTests.cs" />
