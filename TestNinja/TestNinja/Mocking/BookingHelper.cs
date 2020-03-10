@@ -4,19 +4,37 @@ using System.Linq;
 
 namespace TestNinja.Mocking
 {
-    public static class BookingHelper
+    public interface IBookingRepository
     {
-        public static string OverlappingBookingsExist(Booking booking)
-        {
-            if (booking.Status == "Cancelled")
-                return string.Empty;
+        IQueryable<Booking> GetActiveBookings(int? excludedBookingId = null);
+    }
 
+    public class BookingRepository : IBookingRepository
+    {
+        public IQueryable<Booking> GetActiveBookings(int? excludedBookingId = null)
+        {
             var unitOfWork = new UnitOfWork();
             var bookings =
                 unitOfWork.Query<Booking>()
                     .Where(
-                        b => b.Id != booking.Id && b.Status != "Cancelled");
+                        b => b.Status != "Cancelled");
+            if (excludedBookingId.HasValue)
+                bookings = bookings.Where(b => b.Id != excludedBookingId.Value);
+            return bookings;
+        }
+    }
 
+
+    public static class BookingHelper
+    {
+        public static string OverlappingBookingsExist(Booking booking, IBookingRepository bookingRepository)
+        {
+            // If booking is cancelled return immediately
+            if (booking.Status == "Cancelled")
+                return string.Empty;
+            // Get a list of all other active bookings
+            var bookings = bookingRepository.GetActiveBookings(booking.Id);
+            // Checks if any of the bookings returned overlap with the existing booking
             var overlappingBooking =
                 bookings.FirstOrDefault(
                     b =>
@@ -24,7 +42,7 @@ namespace TestNinja.Mocking
                         && booking.ArrivalDate < b.DepartureDate
                         || booking.DepartureDate > b.ArrivalDate
                         && booking.DepartureDate <= b.DepartureDate);
-
+            // returns empty string if no-overlap returns strung reference to booking if overlapping
             return overlappingBooking == null ? string.Empty : overlappingBooking.Reference;
         }
     }
